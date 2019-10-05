@@ -1,0 +1,32 @@
+<form [formGroup]="addServiceFG">
+  <div>
+    <label>Service Name</label>
+    <input type="text" formControlName="serviceName">
+  </div>
+  <div>
+    <label>Description</label>
+    <textarea type="text" formControlName="discription"></textarea>
+  </div>
+  <div>
+    <label>Service Label</label>
+    <select formControlName="serviceType" (ngModelChange)="onLabelChange($event)">
+      <option>Select Service Type</option>
+      <option *ngFor="let label of serviceLabels; let i=index" [ngValue]="label">{{ label.name }}</option>
+    </select>
+  </div>
+  <div *ngIf="selectedServiceLabel">
+    <label>Service Plan</label>
+    <div>
+      <select formControlName="servicePlan" (ngModelChange)="onPlanChange($event)">
+        <option>Select Plan Type</option>
+        <option *ngFor="let plan of servicePlans; let i=index" [ngValue]="plan">{{ plan.name }}</option>
+      </select>
+    </div>
+    <app-schema-builder [schemaObjEvt]="childFormSchema" [cssInnerWrapper]="cssSchemaBuiderInner"
+    [cssOuterWrapper]="''"></app-schema-builder>
+  </div>
+  <div>
+    <button type="submit" class="" (click)="saveNewService()">Create Service</button>
+  </div>
+
+</form>

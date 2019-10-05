@@ -1,0 +1,35 @@
+<header>
+  <h2>List Service</h2>
+</header>
+<form>
+<div>
+  <h4>Selected Pools</h4>
+  <label *ngFor="let pool of pools; let i= index">
+    <input type="checkbox" value="{{pool.id}}" (change)="onPoolChecked(pool,$event)"><strong>{{pool.name}}</strong>
+  </label>
+</div>
+<div>
+  <label>
+    <input type="checkbox" (change)="onSelectAll($event)"><strong>Select ALL</strong>
+  </label>
+  <button (click)="onDeployService(service)">Deploy</button>
+</div>
+<div *ngFor="let service of services; let i= index;">
+  <div>
+    <h4>{{service.name}}</h4>
+    <label>Description</label>
+    <p>{{service.description}}</p>
+    <label>Service Label</label>
+    <em *ngIf="service?.servicePlan !== null">{{ service.servicePlan.serviceLabel.name}}</em>
+    <br>
+    <input type="checkbox" value="{{service.id}}" (change)="onServiceChecked(service, $event)"
+           name="service_selection" [checked]="isChecked">
+    <button (click)="onManagedClicked()">Manage</button>
+    <div>
+      <button (click)="checkServiceStatusInPool(service)">Check Status</button>
+      {{serviceStatusInPool}}
+    </div>
+    <!--<a [routerLink]="[{ outlets: {rightrail: ['editService']}}]">Contact</a>-->
+  </div>
+</div>
+</form>

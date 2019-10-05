@@ -1,0 +1,99 @@
+<form [formGroup]="form">
+  <div *ngFor="let prop of schemaArray">
+  <!-- start of for loop-->
+
+    <div *ngIf="prop.type =='array'; else normalContent">
+      <div name="forStylingOnly" formArrayName="{{prop.key}}">
+        <div name="formArrayExtractor" *ngFor="let address of form.controls[prop.key].controls; let i=index" [formGroupName]="i">
+          <div *ngFor="let innerPro of prop.value">
+            <div [ngClass]="cssInnerWrapper">
+                <label *ngIf="prop.type !== 'button' || prop.type == 'label'" [attr.for]="innerPro">
+                  {{innerPro.label}}
+                </label>
+              <div [ngSwitch]="innerPro.type">
+                <!--switch case start-->
+                <div *ngSwitchCase="'text'">
+                  <input [formControlName]="innerPro.key" [id]="innerPro.key" [type]="innerPro.type">
+                </div>
+                <div *ngSwitchCase="'select'">
+                  <select [formControlName]="innerPro.key" [id]="innerPro.key">
+                    <option *ngFor="let option of innerPro.options" [value]="option.value">{{ option.label }}</option>
+                  </select>
+                </div>
+                <div *ngSwitchCase="'radio'">
+                  <label *ngFor="let option of innerPro.option"> {{option.label}}
+                    <input [formControlName]="innerPro.key" type="radio" class="{{innerPro.class}}"
+                           [name]="innerPro.key" value="{{option.value}}">
+                  </label>
+                </div>
+                <div *ngSwitchCase="'checkbox'">
+                  <label *ngFor="let option of innerPro.option"> {{option.label}}
+                    <input [formControlName]="innerPro.key" type="checkbox" class="{{innerPro.class}}"
+                           [name]="innerPro.key" value="{{option.value}}">
+                  </label>
+                </div>
+                <div *ngSwitchCase="'textarea'">
+            <textarea [formControlName]="innerPro.key" [id]="innerPro.key" rows="4" cols="50">
+            </textarea>
+                </div>
+                <div *ngSwitchCase="'button'">
+                  <input [formControlName]="innerPro.key" [id]="innerPro.key" [type]="innerPro.type" (click)="action($event, prop)"
+                         class="{{innerPro.class}}" value="{{innerPro.label}}">
+                </div>
+                <div *ngSwitchCase="'label'">
+                  <label class="{{prop.class}}">{{innerPro.value}}</label>
+                </div>
+                <!--switch case end-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #normalContent>
+      <div name="forStylingOnly" [ngClass] = "cssOuterWrapper">
+        <label *ngIf="prop.type !== 'button'" [attr.for]="prop">{{prop.label}}</label>
+        <div [ngSwitch]="prop.type">
+        <!--switch case start-->
+          <div *ngSwitchCase="'text'">
+            <input [formControlName]="prop.key" [id]="prop.key" [type]="prop.type">
+          </div>
+          <div *ngSwitchCase="'select'">
+            <select [formControlName]="prop.key" [id]="prop.key">
+              <option *ngFor="let option of prop.options" [value]="option.value">{{ option.label }}</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'radio'">
+            <label *ngFor="let option of prop.option"> {{option.label}}
+              <input [formControlName]="prop.key" type="radio" class="{{prop.class}}"
+              [name]="prop.key" value="{{option.value}}">
+            </label>
+          </div>
+          <div *ngSwitchCase="'checkbox'">
+            <label *ngFor="let option of prop.option"> {{option.label}}
+              <input [formControlName]="prop.key" type="checkbox" class="{{prop.class}}"
+                     [name]="prop.key" value="{{option.value}}">
+            </label>
+          </div>
+          <div *ngSwitchCase="'textarea'">
+            <textarea [formControlName]="prop.key" [id]="prop.key" rows="4" cols="50">
+            </textarea>
+          </div>
+          <div *ngSwitchCase="'button'">
+            <input [formControlName]="prop.key" [id]="prop.key" [type]="prop.type" (click)="action($event, prop)"
+              class="{{prop.class}}" value="{{prop.label}}">
+          </div>
+          <div *ngSwitchCase="'label'">
+            <label class="{{prop.class}}">{{prop.value}}</label>
+          </div>
+        <!--switch case end-->
+        </div>
+      </div>
+    </ng-template>
+
+  <!-- end of for loop-->
+  </div>
+  <p>Form Value : {{form.value | json}}</p>
+  <p>Form Status : {{form.status | json}}</p>
+</form>

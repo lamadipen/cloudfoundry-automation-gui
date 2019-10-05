@@ -1,0 +1,5 @@
+<header>Add Label</header>
+<form #labelForm="ngForm" (submit)="saveLabel(); labelForm.reset()">
+Name : <input type="text" [(ngModel)]="label.name">
+<button type="submit" >Submit</button>
+</form>
